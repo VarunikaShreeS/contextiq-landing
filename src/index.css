@@ -4,9 +4,12 @@
 
 @layer base {
   body {
-    background-color: #FAF7F0;
-    color: #3B2A20;
+    @apply bg-softIvory text-darkChocolate transition-colors duration-300;
     font-family: 'Inter', sans-serif;
+  }
+
+  html.dark body {
+    @apply bg-darkChocolate text-softIvory;
   }
 }
 

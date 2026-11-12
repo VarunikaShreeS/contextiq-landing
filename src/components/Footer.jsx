@@ -2,11 +2,10 @@ import { Network } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-darkChocolate text-softIvory border-t border-walnutBrown/40">
+    <footer className="bg-darkChocolate dark:bg-[#2A1D16] text-softIvory border-t border-walnutBrown/40 transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-10 border-b border-walnutBrown/40">
           
-          {/* Brand Column */}
           <div className="md:col-span-5 space-y-4">
             <a href="#" className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-lg bg-walnutBrown/40 border border-caramel/40 flex items-center justify-center">
@@ -23,7 +22,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Navigation Links */}
           <div className="md:col-span-3 space-y-3">
             <p className="text-xs uppercase tracking-wider font-semibold text-caramel">
               Platform
@@ -52,7 +50,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Intelligence Hubs */}
           <div className="md:col-span-4 space-y-3">
             <p className="text-xs uppercase tracking-wider font-semibold text-caramel">
               Intelligence Hubs
@@ -66,7 +63,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright Row */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-warmBeige/80">
           <p>© {new Date().getFullYear()} ContextIQ. All rights reserved.</p>
           <p>Built with React &amp; Tailwind CSS</p>
