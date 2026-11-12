@@ -2,14 +2,101 @@ import { useState } from 'react';
 import {
   ArrowRight,
   ShieldCheck,
+  AlertTriangle,
   FileText,
   Network,
   CheckSquare,
   Sparkles,
 } from 'lucide-react';
 
+const scenarios = [
+  {
+    id: 'architecture',
+    label: 'Architecture Sync',
+    workspace: 'Workspace / Q4 Product Launch',
+    sourceCount: '14 project sources',
+    question: '“What database architecture did we approve in Tuesday’s sync?”',
+    badgeText: 'Verified from 2 Sources',
+    statusText: '0 conflicts detected',
+    hasConflict: false,
+    answerBefore: 'The team approved ',
+    answerHighlight: 'PostgreSQL with pgvector',
+    answerAfter: ' to keep relational project data and vector embeddings unified.',
+    sources: [
+      'Architecture_Spec.pdf · Page 4',
+      'Sync_Transcript.txt · 14:20',
+    ],
+    actionTitle: 'Action Extracted: Finalize schema migration',
+    actionMeta: 'Linked to Decision #12 · Due Friday',
+    actionStatus: 'Tracked',
+    graphFiles: '14 Files Linked',
+    graphFilesSub: 'PDFs, Research Papers & Specs',
+    graphActions: '9 Verified Actions',
+    graphActionsSub: 'Traced to exact meeting lines',
+    temporalText: 'Spec v2.1 replaced v1.0 on Oct 12',
+    temporalBadge: 'Up to date',
+  },
+  {
+    id: 'conflict',
+    label: 'Conflict Detector',
+    workspace: 'Workspace / Client Delivery',
+    sourceCount: '9 workspace files',
+    question: '“Is the security audit deadline still set for November 20?”',
+    badgeText: 'Conflict Detected',
+    statusText: '1 date mismatch flagged',
+    hasConflict: true,
+    answerBefore: 'Caution: The original contract lists Nov 20, but yesterday’s call moved the freeze to ',
+    answerHighlight: 'November 14 (6 days earlier)',
+    answerAfter: '.',
+    sources: [
+      'Master_Contract_v1.pdf · Page 9',
+      'Client_Call_Notes.md · Line 38',
+    ],
+    actionTitle: 'Review Required: Align sprint timeline',
+    actionMeta: 'Conflict #04 · Needs owner approval',
+    actionStatus: 'Flagged',
+    graphFiles: '9 Files Linked',
+    graphFilesSub: 'Contracts, Call Notes & Roadmaps',
+    graphActions: '1 Conflict Flagged',
+    graphActionsSub: 'Date mismatch across 2 versions',
+    temporalText: 'Call_Notes.md (Nov 11) contradicts Contract v1',
+    temporalBadge: 'Needs Review',
+  },
+  {
+    id: 'hackathon',
+    label: 'Hackathon & Research',
+    workspace: 'Workspace / Innovation Challenge',
+    sourceCount: '11 problem & research PDFs',
+    question: '“Which lightweight OCR model fits our offline rural document app?”',
+    badgeText: 'Synthesized from 3 Papers',
+    statusText: 'Evidence-grounded',
+    hasConflict: false,
+    answerBefore: 'Across your uploaded benchmarks, ',
+    answerHighlight: 'PaddleOCR (Mobile v4)',
+    answerAfter: ' delivers the highest multi-language accuracy under 15MB RAM.',
+    sources: [
+      'Problem_Statement_PS04.pdf · Page 2',
+      'Edge_OCR_Benchmark.pdf · Page 7',
+    ],
+    actionTitle: 'Milestone Added: Test OCR on sample forms',
+    actionMeta: 'Linked to Judging Criteria · Sprint 1',
+    actionStatus: 'Ready',
+    graphFiles: '11 Files Linked',
+    graphFilesSub: 'Problem PDFs & IEEE Benchmarks',
+    graphActions: '6 Milestones Mapped',
+    graphActionsSub: 'Aligned to evaluation rubric',
+    temporalText: 'Problem Addendum v2 merged into workspace',
+    temporalBadge: 'Synced',
+  },
+];
+
 export default function Hero() {
+  // Controls which scenario button is active (0, 1, or 2)
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  // Controls whether the preview window displays Verified Q&A or Context Graph
   const [activeTab, setActiveTab] = useState('evidence');
+
+  const current = scenarios[selectedIndex];
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-warmBeige/40 dark:border-walnutBrown/40">
@@ -62,18 +149,42 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Column: Interactive Product Interface Preview */}
-        <div className="lg:col-span-6">
+        {/* Right Column: Interactive ContextIQ Simulator */}
+        <div className="lg:col-span-6 space-y-3">
+          {/* Scenario Selector Pills */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-[11px] uppercase tracking-wider font-semibold text-walnutBrown dark:text-warmBeige">
+              Try a live scenario:
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {scenarios.map((item, idx) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setSelectedIndex(idx)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors border ${
+                    selectedIndex === idx
+                      ? 'bg-darkChocolate dark:bg-caramel text-softIvory border-darkChocolate dark:border-caramel shadow-sm'
+                      : 'bg-vanillaCream/80 dark:bg-walnutBrown/20 text-walnutBrown dark:text-warmBeige border-warmBeige dark:border-walnutBrown/50 hover:border-caramel hover:text-darkChocolate dark:hover:text-softIvory'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Simulator Window Card */}
           <div className="rounded-2xl bg-vanillaCream/70 dark:bg-walnutBrown/20 border border-warmBeige dark:border-walnutBrown/60 shadow-lg overflow-hidden">
             
             {/* Window Top Bar */}
-            <div className="bg-darkChocolate dark:bg-[#2A1D16] px-4 py-3 flex items-center justify-between">
+            <div className="bg-darkChocolate dark:bg-[#2A1D16] px-4 py-3 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-caramel" />
                 <span className="w-2.5 h-2.5 rounded-full bg-warmBeige/60" />
                 <span className="w-2.5 h-2.5 rounded-full bg-softIvory/40" />
-                <span className="ml-2 text-xs font-medium text-warmBeige">
-                  Workspace / Q4 Product Launch
+                <span className="ml-1.5 text-xs font-medium text-warmBeige truncate max-w-[180px] sm:max-w-none">
+                  {current.workspace}
                 </span>
               </div>
 
@@ -107,96 +218,118 @@ export default function Hero() {
             <div className="p-5 sm:p-6 bg-softIvory/80 dark:bg-darkChocolate/90 space-y-4">
               {activeTab === 'evidence' ? (
                 <>
+                  {/* Simulated User Question */}
                   <div className="bg-vanillaCream dark:bg-walnutBrown/25 border border-warmBeige/70 dark:border-walnutBrown/50 rounded-xl p-3.5">
                     <p className="text-xs uppercase tracking-wider text-walnutBrown dark:text-warmBeige font-semibold mb-1">
-                      Question across 14 project sources
+                      Question across {current.sourceCount}
                     </p>
                     <p className="text-sm font-medium text-darkChocolate dark:text-softIvory">
-                      “What database architecture did we approve in Tuesday’s sync?”
+                      {current.question}
                     </p>
                   </div>
 
+                  {/* Simulated Evidence-Grounded AI Response */}
                   <div className="bg-softIvory dark:bg-walnutBrown/15 border border-warmBeige dark:border-walnutBrown/50 rounded-xl p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-caramel">
-                        <ShieldCheck className="w-4 h-4" />
-                        Verified from 2 Sources
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-xs font-semibold ${
+                          current.hasConflict
+                            ? 'text-amber-700 dark:text-amber-300'
+                            : 'text-caramel'
+                        }`}
+                      >
+                        {current.hasConflict ? (
+                          <AlertTriangle className="w-4 h-4" />
+                        ) : (
+                          <ShieldCheck className="w-4 h-4" />
+                        )}
+                        {current.badgeText}
                       </span>
                       <span className="text-[11px] text-walnutBrown dark:text-warmBeige">
-                        0 conflicts detected
+                        {current.statusText}
                       </span>
                     </div>
 
                     <p className="text-sm text-darkChocolate dark:text-softIvory leading-relaxed">
-                      The team approved{' '}
+                      {current.answerBefore}
                       <span className="bg-vanillaCream dark:bg-walnutBrown/40 px-1.5 py-0.5 rounded font-medium">
-                        PostgreSQL with pgvector
-                      </span>{' '}
-                      to keep relational project data and vector embeddings unified.
+                        {current.answerHighlight}
+                      </span>
+                      {current.answerAfter}
                     </p>
 
+                    {/* Evidence Citations */}
                     <div className="pt-2 border-t border-warmBeige/50 dark:border-walnutBrown/40 flex flex-wrap gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-xs bg-vanillaCream dark:bg-walnutBrown/30 text-darkChocolate dark:text-vanillaCream px-2.5 py-1 rounded-md border border-warmBeige/80 dark:border-walnutBrown/60">
-                        <FileText className="w-3.5 h-3.5 text-caramel" />
-                        Architecture_Spec.pdf · Page 4
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs bg-vanillaCream dark:bg-walnutBrown/30 text-darkChocolate dark:text-vanillaCream px-2.5 py-1 rounded-md border border-warmBeige/80 dark:border-walnutBrown/60">
-                        <FileText className="w-3.5 h-3.5 text-caramel" />
-                        Sync_Transcript.txt · 14:20
-                      </span>
+                      {current.sources.map((src) => (
+                        <span
+                          key={src}
+                          className="inline-flex items-center gap-1.5 text-xs bg-vanillaCream dark:bg-walnutBrown/30 text-darkChocolate dark:text-vanillaCream px-2.5 py-1 rounded-md border border-warmBeige/80 dark:border-walnutBrown/60"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-caramel shrink-0" />
+                          <span>{src}</span>
+                        </span>
+                      ))}
                     </div>
 
-                    <div className="bg-vanillaCream/70 dark:bg-walnutBrown/25 rounded-lg p-3 flex items-center justify-between border border-warmBeige/60 dark:border-walnutBrown/50">
+                    {/* Extracted Action Item */}
+                    <div className="bg-vanillaCream/70 dark:bg-walnutBrown/25 rounded-lg p-3 flex items-center justify-between gap-2 border border-warmBeige/60 dark:border-walnutBrown/50">
                       <div className="flex items-center gap-2.5">
                         <CheckSquare className="w-4 h-4 text-caramel shrink-0" />
                         <div>
                           <p className="text-xs font-semibold text-darkChocolate dark:text-softIvory">
-                            Action Extracted: Finalize schema migration
+                            {current.actionTitle}
                           </p>
                           <p className="text-[11px] text-walnutBrown dark:text-warmBeige">
-                            Linked to Decision #12 · Due Friday
+                            {current.actionMeta}
                           </p>
                         </div>
                       </div>
-                      <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-darkChocolate dark:bg-caramel text-softIvory">
-                        Tracked
+                      <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-darkChocolate dark:bg-caramel text-softIvory shrink-0">
+                        {current.actionStatus}
                       </span>
                     </div>
                   </div>
                 </>
               ) : (
+                /* Context Graph View for Selected Scenario */
                 <div className="bg-softIvory dark:bg-walnutBrown/15 border border-warmBeige dark:border-walnutBrown/50 rounded-xl p-4 space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-wider text-walnutBrown dark:text-warmBeige">
-                    Connected Entities — Q4 Product Launch
+                    Connected Entities — {current.label}
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="p-3 rounded-lg bg-vanillaCream dark:bg-walnutBrown/25 border border-warmBeige dark:border-walnutBrown/50">
-                      <p className="text-xs text-walnutBrown dark:text-warmBeige">Source Documents</p>
+                      <p className="text-xs text-walnutBrown dark:text-warmBeige">
+                        Source Documents
+                      </p>
                       <p className="text-base font-bold text-darkChocolate dark:text-softIvory mt-0.5">
-                        14 Files Linked
+                        {current.graphFiles}
                       </p>
                       <p className="text-xs text-walnutBrown dark:text-warmBeige mt-1">
-                        PDFs, Research Papers &amp; Specs
+                        {current.graphFilesSub}
                       </p>
                     </div>
 
                     <div className="p-3 rounded-lg bg-vanillaCream dark:bg-walnutBrown/25 border border-warmBeige dark:border-walnutBrown/50">
-                      <p className="text-xs text-walnutBrown dark:text-warmBeige">Decisions &amp; Tasks</p>
+                      <p className="text-xs text-walnutBrown dark:text-warmBeige">
+                        Decisions &amp; Tasks
+                      </p>
                       <p className="text-base font-bold text-darkChocolate dark:text-softIvory mt-0.5">
-                        9 Verified Actions
+                        {current.graphActions}
                       </p>
                       <p className="text-xs text-walnutBrown dark:text-warmBeige mt-1">
-                        Traced to exact meeting lines
+                        {current.graphActionsSub}
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-lg bg-darkChocolate dark:bg-[#2A1D16] text-softIvory text-xs flex items-center justify-between">
+                  <div className="p-3 rounded-lg bg-darkChocolate dark:bg-[#2A1D16] text-softIvory text-xs flex flex-wrap items-center justify-between gap-2">
                     <span>
-                      Temporal Check: <strong>Spec v2.1</strong> replaced v1.0 on Oct 12
+                      Temporal Check: <strong>{current.temporalText}</strong>
                     </span>
-                    <span className="text-caramel font-semibold">Up to date</span>
+                    <span className="text-caramel font-semibold">
+                      {current.temporalBadge}
+                    </span>
                   </div>
                 </div>
               )}
