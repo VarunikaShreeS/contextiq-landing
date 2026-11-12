@@ -7,6 +7,7 @@ import {
   Network,
   CheckSquare,
   Sparkles,
+  Play,
 } from 'lucide-react';
 
 const scenarios = [
@@ -90,10 +91,8 @@ const scenarios = [
   },
 ];
 
-export default function Hero() {
-  // Controls which scenario button is active (0, 1, or 2)
+export default function Hero({ onOpenDemo }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  // Controls whether the preview window displays Verified Q&A or Context Graph
   const [activeTab, setActiveTab] = useState('evidence');
 
   const current = scenarios[selectedIndex];
@@ -121,19 +120,21 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
+            <button
+              type="button"
+              onClick={onOpenDemo}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-caramel text-softIvory text-sm font-semibold hover:bg-darkChocolate dark:hover:bg-walnutBrown transition-colors shadow-sm"
+            >
+              <Play className="w-4 h-4 fill-current" />
+              <span>Try Live Sandbox</span>
+            </button>
+
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-caramel text-softIvory text-sm font-semibold hover:bg-darkChocolate dark:hover:bg-walnutBrown transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-vanillaCream dark:bg-walnutBrown/25 text-darkChocolate dark:text-softIvory border border-warmBeige dark:border-walnutBrown/60 text-sm font-semibold hover:bg-warmBeige/40 dark:hover:bg-walnutBrown/40 transition-colors"
             >
               <span>Request Early Access</span>
               <ArrowRight className="w-4 h-4" />
-            </a>
-
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-vanillaCream dark:bg-walnutBrown/25 text-darkChocolate dark:text-softIvory border border-warmBeige dark:border-walnutBrown/60 text-sm font-semibold hover:bg-warmBeige/40 dark:hover:bg-walnutBrown/40 transition-colors"
-            >
-              See How It Works
             </a>
           </div>
 
@@ -151,7 +152,6 @@ export default function Hero() {
 
         {/* Right Column: Interactive ContextIQ Simulator */}
         <div className="lg:col-span-6 space-y-3">
-          {/* Scenario Selector Pills */}
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="text-[11px] uppercase tracking-wider font-semibold text-walnutBrown dark:text-warmBeige">
               Try a live scenario:
@@ -174,10 +174,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Simulator Window Card */}
           <div className="rounded-2xl bg-vanillaCream/70 dark:bg-walnutBrown/20 border border-warmBeige dark:border-walnutBrown/60 shadow-lg overflow-hidden">
-            
-            {/* Window Top Bar */}
             <div className="bg-darkChocolate dark:bg-[#2A1D16] px-4 py-3 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-caramel" />
@@ -214,11 +211,9 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Window Body Content */}
             <div className="p-5 sm:p-6 bg-softIvory/80 dark:bg-darkChocolate/90 space-y-4">
               {activeTab === 'evidence' ? (
                 <>
-                  {/* Simulated User Question */}
                   <div className="bg-vanillaCream dark:bg-walnutBrown/25 border border-warmBeige/70 dark:border-walnutBrown/50 rounded-xl p-3.5">
                     <p className="text-xs uppercase tracking-wider text-walnutBrown dark:text-warmBeige font-semibold mb-1">
                       Question across {current.sourceCount}
@@ -228,7 +223,6 @@ export default function Hero() {
                     </p>
                   </div>
 
-                  {/* Simulated Evidence-Grounded AI Response */}
                   <div className="bg-softIvory dark:bg-walnutBrown/15 border border-warmBeige dark:border-walnutBrown/50 rounded-xl p-4 space-y-3">
                     <div className="flex items-center justify-between gap-2">
                       <span
@@ -258,20 +252,21 @@ export default function Hero() {
                       {current.answerAfter}
                     </p>
 
-                    {/* Evidence Citations */}
                     <div className="pt-2 border-t border-warmBeige/50 dark:border-walnutBrown/40 flex flex-wrap gap-2">
                       {current.sources.map((src) => (
-                        <span
+                        <button
                           key={src}
-                          className="inline-flex items-center gap-1.5 text-xs bg-vanillaCream dark:bg-walnutBrown/30 text-darkChocolate dark:text-vanillaCream px-2.5 py-1 rounded-md border border-warmBeige/80 dark:border-walnutBrown/60"
+                          type="button"
+                          onClick={onOpenDemo}
+                          title="Click to inspect source passage in Live Sandbox"
+                          className="inline-flex items-center gap-1.5 text-xs bg-vanillaCream dark:bg-walnutBrown/30 text-darkChocolate dark:text-vanillaCream px-2.5 py-1 rounded-md border border-warmBeige/80 dark:border-walnutBrown/60 hover:border-caramel transition-colors"
                         >
                           <FileText className="w-3.5 h-3.5 text-caramel shrink-0" />
                           <span>{src}</span>
-                        </span>
+                        </button>
                       ))}
                     </div>
 
-                    {/* Extracted Action Item */}
                     <div className="bg-vanillaCream/70 dark:bg-walnutBrown/25 rounded-lg p-3 flex items-center justify-between gap-2 border border-warmBeige/60 dark:border-walnutBrown/50">
                       <div className="flex items-center gap-2.5">
                         <CheckSquare className="w-4 h-4 text-caramel shrink-0" />
@@ -291,7 +286,6 @@ export default function Hero() {
                   </div>
                 </>
               ) : (
-                /* Context Graph View for Selected Scenario */
                 <div className="bg-softIvory dark:bg-walnutBrown/15 border border-warmBeige dark:border-walnutBrown/50 rounded-xl p-4 space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-wider text-walnutBrown dark:text-warmBeige">
                     Connected Entities — {current.label}

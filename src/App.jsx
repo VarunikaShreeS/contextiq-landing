@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Network, Menu, X, Sun, Moon } from 'lucide-react';
+import { Network, Menu, X, Sun, Moon, Sparkles } from 'lucide-react';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import HowItWorks from './components/HowItWorks';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import DemoModal from './components/DemoModal';
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState('Researcher Pro');
+  const [demoModalOpen, setDemoModalOpen] = useState(false);
 
-  // Reads saved theme from browser memory (defaults to Light Mode)
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('contextiq-theme') === 'dark';
   });
 
-  // Adds or removes the "dark" class on the <html> element whenever darkMode changes
   useEffect(() => {
     const root = document.documentElement;
     if (darkMode) {
@@ -38,7 +38,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-softIvory dark:bg-darkChocolate text-darkChocolate dark:text-softIvory transition-colors duration-300">
       {/* Sticky Navigation Bar */}
-      <header className="sticky top-0 z-50 bg-softIvory/95 dark:bg-darkChocolate/95 backdrop-blur-sm border-b border-warmBeige/40 dark:border-walnutBrown/40 transition-colors duration-300">
+      <header className="sticky top-0 z-40 bg-softIvory/95 dark:bg-darkChocolate/95 backdrop-blur-sm border-b border-warmBeige/40 dark:border-walnutBrown/40 transition-colors duration-300">
         <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Brand Logo */}
           <a href="#" className="flex items-center gap-2.5 group">
@@ -63,7 +63,7 @@ export default function App() {
             ))}
           </div>
 
-          {/* Desktop Theme Toggle & Get Started Button */}
+          {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             <button
               type="button"
@@ -79,6 +79,15 @@ export default function App() {
               )}
             </button>
 
+            <button
+              type="button"
+              onClick={() => setDemoModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-vanillaCream dark:bg-walnutBrown/25 border border-warmBeige dark:border-walnutBrown/60 text-darkChocolate dark:text-softIvory text-sm font-medium hover:border-caramel transition-colors"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-caramel" />
+              <span>Live Sandbox</span>
+            </button>
+
             <a
               href="#contact"
               className="px-5 py-2.5 rounded-lg bg-caramel text-softIvory text-sm font-medium hover:bg-darkChocolate dark:hover:bg-walnutBrown transition-colors shadow-sm"
@@ -87,7 +96,7 @@ export default function App() {
             </a>
           </div>
 
-          {/* Mobile Controls (Theme Toggle + Menu Button) */}
+          {/* Mobile Controls */}
           <div className="flex md:hidden items-center gap-2">
             <button
               type="button"
@@ -126,6 +135,17 @@ export default function App() {
                 {link.name}
               </a>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setDemoModalOpen(true);
+              }}
+              className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-softIvory dark:bg-darkChocolate border border-warmBeige dark:border-walnutBrown text-darkChocolate dark:text-softIvory text-sm font-medium"
+            >
+              <Sparkles className="w-4 h-4 text-caramel" />
+              <span>Try Live Sandbox</span>
+            </button>
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
@@ -139,7 +159,7 @@ export default function App() {
 
       {/* Main Page Sections */}
       <main>
-        <Hero />
+        <Hero onOpenDemo={() => setDemoModalOpen(true)} />
         <Features />
         <HowItWorks />
         <Pricing onSelectPlan={(planName) => setSelectedPlan(planName)} />
@@ -148,6 +168,9 @@ export default function App() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Interactive Workspace Sandbox Modal */}
+      <DemoModal isOpen={demoModalOpen} onClose={() => setDemoModalOpen(false)} />
     </div>
   );
 }
