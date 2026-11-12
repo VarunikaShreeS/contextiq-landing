@@ -1,17 +1,31 @@
 import { useState, useEffect } from 'react';
-import { Network, Menu, X, Sun, Moon, Sparkles } from 'lucide-react';
+import { Network, Menu, X, Sun, Moon, Sparkles, ArrowUp } from 'lucide-react';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import HowItWorks from './components/HowItWorks';
 import Pricing from './components/Pricing';
+import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import DemoModal from './components/DemoModal';
+
+const navLinks = [
+  { id: 'features', name: 'Features', href: '#features' },
+  { id: 'how-it-works', name: 'How It Works', href: '#how-it-works' },
+  { id: 'pricing', name: 'Pricing', href: '#pricing' },
+  { id: 'faq', name: 'FAQ', href: '#faq' },
+  { id: 'contact', name: 'Contact', href: '#contact' },
+];
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState('Researcher Pro');
   const [demoModalOpen, setDemoModalOpen] = useState(false);
+
+  // Tracks which section is currently visible in the viewport (Scroll-Spy)
+  const [activeSection, setActiveSection] = useState('');
+  // Tracks whether the floating Scroll-to-Top button should appear
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('contextiq-theme') === 'dark';
@@ -28,12 +42,36 @@ export default function App() {
     }
   }, [darkMode]);
 
-  const navLinks = [
-    { name: 'Features', href: '#features' },
-    { name: 'How It Works', href: '#how-it-works' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  // Listens to page scroll to update the active navbar link and Scroll-to-Top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 450);
+
+      if (window.scrollY < 250) {
+        setActiveSection('');
+        return;
+      }
+
+      for (const link of navLinks) {
+        const sectionEl = document.getElementById(link.id);
+        if (sectionEl) {
+          const rect = sectionEl.getBoundingClientRect();
+          if (rect.top <= 180 && rect.bottom >= 180) {
+            setActiveSection(link.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-softIvory dark:bg-darkChocolate text-darkChocolate dark:text-softIvory transition-colors duration-300">
@@ -50,17 +88,27 @@ export default function App() {
             </span>
           </a>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-walnutBrown dark:text-warmBeige hover:text-darkChocolate dark:hover:text-softIvory transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
+          {/* Desktop Navigation Links with Scroll-Spy Highlighting */}
+          <div className="hidden md:flex items-center gap-7">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`relative py-1 text-sm transition-colors ${
+                    isActive
+                      ? 'font-semibold text-caramel'
+                      : 'font-medium text-walnutBrown dark:text-warmBeige hover:text-darkChocolate dark:hover:text-softIvory'
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-caramel" />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
           {/* Desktop Actions */}
@@ -125,16 +173,23 @@ export default function App() {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-vanillaCream dark:bg-[#2E2018] border-b border-warmBeige/50 dark:border-walnutBrown/50 px-4 pt-3 pb-5 space-y-3">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 text-base font-medium text-darkChocolate dark:text-softIvory hover:text-caramel"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block py-2 text-base transition-colors ${
+                    isActive
+                      ? 'font-semibold text-caramel'
+                      : 'font-medium text-darkChocolate dark:text-softIvory hover:text-caramel'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
             <button
               type="button"
               onClick={() => {
@@ -163,6 +218,7 @@ export default function App() {
         <Features />
         <HowItWorks />
         <Pricing onSelectPlan={(planName) => setSelectedPlan(planName)} />
+        <FAQ />
         <Contact selectedPlan={selectedPlan} />
       </main>
 
@@ -171,6 +227,21 @@ export default function App() {
 
       {/* Interactive Workspace Sandbox Modal */}
       <DemoModal isOpen={demoModalOpen} onClose={() => setDemoModalOpen(false)} />
+
+      {/* Floating Scroll-to-Top Button */}
+      <button
+        type="button"
+        onClick={scrollToTop}
+        aria-label="Scroll back to top"
+        title="Back to Top"
+        className={`fixed bottom-6 right-6 z-30 p-3 rounded-full bg-darkChocolate dark:bg-caramel text-softIvory border border-caramel/40 shadow-lg hover:bg-caramel dark:hover:bg-walnutBrown transition-all duration-300 ${
+          showScrollTop
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+      >
+        <ArrowUp className="w-5 h-5" />
+      </button>
     </div>
   );
 }
