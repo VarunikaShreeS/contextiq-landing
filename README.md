@@ -2,21 +2,33 @@
 
 **Tagline:** *Knowledge that connects. Intelligence that acts.*
 
-ContextIQ is a modern SaaS landing page designed for an AI-powered knowledge management and research intelligence platform. It demonstrates how scattered documents, research papers, meeting notes, and project decisions can be connected into a single, source-verified workspace.
+ContextIQ is a responsive, interactive SaaS landing page and product sandbox for an AI-powered knowledge management, research synthesis, and context intelligence platform. It demonstrates how scattered documents, research papers, meeting transcripts, datasets, and project decisions connect into one source-verified workspace.
 
-## Design Choices & Highlights
-- **Warm Editorial Palette:** Uses a custom warm neutral palette—Soft Ivory (`#FAF7F0`), Vanilla Cream (`#F2E7D5`), Warm Beige (`#D1B89A`), Caramel (`#A67C52`), Walnut Brown (`#7B5E4A`), and Dark Chocolate (`#3B2A20`)—to create a calm, focused reading environment distinct from standard dark-blue AI templates.
-- **Typography & Hierarchy:** Pairs **Playfair Display** for editorial headings with **Inter** for clean UI readability and clear visual hierarchy.
-- **Interactive Components:** Includes a responsive mobile navigation drawer, an interactive Hero product switcher (*Verified Q&A* vs. *Context Graph*), category-filterable feature cards, audience workflow tabs, a Monthly/Annual pricing toggle synced to the contact form, and client-side form validation.
+## Live Demo
+- **Live Website:** `<PASTE-YOUR-VERCEL-URL-HERE-AFTER-DEPLOYING>`
+
+## Key Interactive Features
+- **Warm Light & Dark Theme Switcher:** Toggles smoothly between a soft editorial light palette (*Soft Ivory* `#FAF7F0` & *Vanilla Cream* `#F2E7D5`) and a warm dark palette (*Dark Chocolate* `#3B2A20` & *Walnut Brown* `#7B5E4A`), persisted via `localStorage`.
+- **Multi-Scenario Hero Simulator:** Interactive preview switching between *Architecture Sync*, *Conflict Detector*, and *Hackathon & Research* across both *Verified Q&A* and *Context Graph* views.
+- **Interactive Live Sandbox Modal (`DemoModal.jsx`):** Includes a multi-workspace switcher (*Research & Hackathon Lab*, *Startup & Business Ops*, *Institution Dept Hub*), proactive assistant alerts, unified source filters (*Docs*, *Papers*, *Meetings*, *Datasets*), AI response style controls (*Concise*, *Academic*, *Executive*), clickable citations with an *Evidence Inspector*, an interactive task checklist, and a *Dataset & Analytics* profiling view.
+- **9 Differentiating Capabilities & 16-Module Ecosystem:** Interactive capability spotlight (A–I) paired with a category-filterable grid covering all 16 product modules.
+- **5 Target User Ecosystems:** Interactive workflow explorer for *Students & Hackathons*, *Research Scholars*, *Developers & Teams*, *Startups & Businesses*, and *Organizations & Institutions*.
+- **Dynamic Pricing & Validated Request Form:** Monthly/Annual billing toggle that pre-selects the chosen plan in the Contact form, complete with client-side validation and confirmation states.
+- **Smooth FAQ Accordion & Scroll-Spy Navigation:** Animated CSS-grid FAQ disclosures, active section highlighting on scroll, and a floating scroll-to-top button.
 
 ## Technologies Used
-- **React 18** (Component-based UI & state management)
-- **Vite** (Fast development server and production bundler)
-- **Tailwind CSS** (Utility-first responsive styling and custom theme palette)
+- **React 18** (`useState`, `useEffect`, modular component architecture)
+- **Vite** (Development server and production bundler)
+- **Tailwind CSS v3** (Custom warm neutral color tokens, responsive grid layouts, and class-based dark mode)
 - **Lucide React** (Consistent vector line icons)
+- **Google Fonts** (*Playfair Display* & *Inter*)
+
+## Challenges & Solutions
+- **Tailwind CSS Configuration & Theme Persistence:** Configured Tailwind CSS v3 with `darkMode: 'class'` and custom color tokens, synchronizing user theme preferences with `localStorage` and `document.documentElement` inside a React `useEffect` hook without flash or layout shift.
+- **Cross-Component State Without a Backend:** Connected the Pricing tier buttons, Hero scenario triggers, and Live Sandbox modal cleanly through lifted React state so button actions feel cohesive across the entire page.
 
 ## How to Run Locally
-1. Clone or download this repository:
+1. Clone this repository:
    ```bash
    git clone <your-github-repo-url>
    cd contextiq-landing
