@@ -5,7 +5,7 @@
 ContextIQ is a responsive, interactive SaaS landing page and product sandbox for an AI-powered knowledge management, research synthesis, and context intelligence platform. It demonstrates how scattered documents, research papers, meeting transcripts, datasets, and project decisions connect into one source-verified workspace.
 
 ## Live Demo
-- **Live Website:** `<PASTE-YOUR-VERCEL-URL-HERE-AFTER-DEPLOYING>`
+- **Live Website:** [https://contextiq-landing-ten.vercel.app](https://contextiq-landing-ten.vercel.app)
 
 ## Key Interactive Features
 - **Warm Light & Dark Theme Switcher:** Toggles smoothly between a soft editorial light palette (*Soft Ivory* `#FAF7F0` & *Vanilla Cream* `#F2E7D5`) and a warm dark palette (*Dark Chocolate* `#3B2A20` & *Walnut Brown* `#7B5E4A`), persisted via `localStorage`.
@@ -30,5 +30,5 @@ ContextIQ is a responsive, interactive SaaS landing page and product sandbox for
 ## How to Run Locally
 1. Clone this repository:
    ```bash
-   git clone <your-github-repo-url>
+   git clone https://github.com/VarunikaShreeS/contextiq-landing.git
    cd contextiq-landing
